@@ -4,9 +4,11 @@
  * Description: Pre-translate strings in GlotPress projects using internal and external tools.
  * Version:     0.1.0
  * Author:      WordPress.org
- * Author URI:  http://wordpress.org/
+ * Author URI:  https://wordpress.org/
  * License:     GPLv2 or later
  * Text Domain: wporg-gp-bulk-pretranslations
+ *
+ * @package WordPressdotorg\GlotPress\Bulk_Pretranslations
  */
 
 namespace WordPressdotorg\GlotPress\Bulk_Pretranslations;

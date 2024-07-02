@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file contains the pre-translation class, which is the base class for all pre-translation classes.
+ *
+ * @package    WordPressdotorg\GlotPress\Bulk_Pretranslations
+ * @author     WordPress.org
+ * @license    http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License
+ * @link       https://wordpress.org/
+ */
 
 namespace WordPressdotorg\GlotPress\Bulk_Pretranslations;
 
@@ -7,20 +15,27 @@ use GP_Locale;
 use GP_Original;
 use GP_Translation_Set;
 
+/**
+ * Pre-translation class.
+ */
 abstract class Pretranslation {
 
 	/**
+	 * The original object.
+	 *
 	 * @var GP_Original
 	 */
-	protected ?GP_Original $original=null;
+	protected ?GP_Original $original = null;
 
 	/**
+	 * The suggestion for the translation (singular).
+	 *
 	 * @var string
 	 */
 	protected string $suggestion_0 = '';
 
 	/**
-	 * Get the suggestion for the translation.
+	 * Gets the suggestion for the translation.
 	 *
 	 * Only works for strings with no plural forms.
 	 *
@@ -52,9 +67,9 @@ abstract class Pretranslation {
 		// We don't pre translate string with a current translation.
 		$translations = GP::$translation->find(
 			array(
-				'original_id' => $original_id,
+				'original_id'        => $original_id,
 				'translation_set_id' => $translation_set->id,
-				'status' => 'current',
+				'status'             => 'current',
 			)
 		);
 		if ( ! empty( $translations ) ) {

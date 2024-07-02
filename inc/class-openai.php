@@ -1,9 +1,22 @@
 <?php
+/**
+ * This file contains the OpenAI pre-translation class.
+ *
+ * @package    WordPressdotorg\GlotPress\Bulk_Pretranslations
+ * @author     WordPress.org
+ * @license    http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License
+ * @link       https://wordpress.org/
+ */
 
 namespace WordPressdotorg\GlotPress\Bulk_Pretranslations;
 
 use GP;
+use GP_Locale;
+use GP_Translation_Set;
 
+/**
+ * OpenAI pre-translation class.
+ */
 class OpenAI extends Pretranslation {
 
 	/**
@@ -13,7 +26,18 @@ class OpenAI extends Pretranslation {
 	 */
 	protected ?int $tokens_used = null;
 
-	public function get_suggestion_0( $original_id, $locale, $translation_set ) {
+	/**
+	 * Gets the suggestion for the translation from OpenAI.
+	 *
+	 * Only works for strings with no plural forms.
+	 *
+	 * @param int                $original_id     The original ID.
+	 * @param GP_Locale          $locale          The locale.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 *
+	 * @return false|string
+	 */
+	public function get_suggestion_0( int $original_id, GP_Locale $locale, GP_Translation_Set $translation_set ) {
 		if ( ! $this->should_pretranslate( $original_id, $translation_set ) ) {
 			return false;
 		}
@@ -48,7 +72,7 @@ class OpenAI extends Pretranslation {
 			$glossary_query = ' The following terms are translated as follows: ';
 			foreach ( $glossary_entries as $translation => $term ) {
 				$glossary_query .= '"' . $term . '" is translated as "' . $translation . '"';
-				if ( array_key_last( $glossary_entries ) != $translation ) {
+				if ( array_key_last( $glossary_entries ) !== $translation ) {
 					$glossary_query .= ', ';
 				}
 			}
@@ -59,7 +83,7 @@ class OpenAI extends Pretranslation {
 		$openai_query .= '"' . $original->singular . '"';
 		$openai_model  = gp_array_get( $gp_default_sort, 'openai_model', 'gpt-3.5-turbo' );
 
-		$messages = array(
+		$messages        = array(
 			array(
 				'role'    => 'system',
 				'content' => $openai_prompt . $glossary_query,
@@ -95,8 +119,8 @@ class OpenAI extends Pretranslation {
 		if ( 200 !== $response_status ) {
 			return false;
 		}
-		$output  = json_decode( wp_remote_retrieve_body( $openai_response ), true );
-		$message = $output['choices'][0]['message'];
+		$output             = json_decode( wp_remote_retrieve_body( $openai_response ), true );
+		$message            = $output['choices'][0]['message'];
 		$this->tokens_used  = $output['usage']['total_tokens'];
 		$this->suggestion_0 = trim( trim( $message['content'] ), '"' );
 

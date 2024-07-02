@@ -1,4 +1,10 @@
 <?php
+/**
+ * Autoloader for WordPress.org projects.
+ *
+ * @package WordPressdotorg\Autoload
+ */
+
 namespace WordPressdotorg\Autoload;
 
 /**
@@ -59,11 +65,12 @@ class Autoloader {
 			return;
 		}
 
-		// Strip prefix from the start (ala PSR-4)
+		// Strip prefix from the start (ala PSR-4).
 		$class = substr( $class, $this->prefix_length + 1 );
 		$class = strtolower( $class );
 		$file  = '';
 
+		// phpcs:ignore
 		if ( false !== ( $last_ns_pos = strripos( $class, self::NS_SEPARATOR ) ) ) {
 			$namespace = substr( $class, 0, $last_ns_pos );
 			$namespace = str_replace( '_', '-', $namespace );
@@ -84,8 +91,8 @@ class Autoloader {
 /**
  * Registers Autoloader's autoload function.
  *
- * @param string $prefix
- * @param string $path
+ * @param string $prefix Prefix all classes have in common.
+ * @param string $path   Path to the files to be loaded.
  */
 function register_class_path( $prefix, $path ) {
 	$loader = new Autoloader( $prefix, $path );

@@ -1,11 +1,36 @@
 <?php
+/**
+ * This file contains the Deepl pre-translation class.
+ *
+ * @package    WordPressdotorg\GlotPress\Bulk_Pretranslations
+ * @author     WordPress.org
+ * @license    http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License
+ * @link       https://wordpress.org/
+ */
 
 namespace WordPressdotorg\GlotPress\Bulk_Pretranslations;
 
 use GP;
+use GP_Locale;
+use GP_Translation_Set;
 
+/**
+ * Deepl pre-translation class.
+ */
 class Deepl extends Pretranslation {
-	public function get_suggestion_0( $original_id, $locale, $translation_set ) {
+
+	/**
+	 * Gets the suggestion for the translation from Deepl.
+	 *
+	 * Only works for strings with no plural forms.
+	 *
+	 * @param int                $original_id     The original ID.
+	 * @param GP_Locale          $locale          The locale.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 *
+	 * @return false|string
+	 */
+	public function get_suggestion_0( int $original_id, GP_Locale $locale, GP_Translation_Set $translation_set ) {
 		if ( ! $this->should_pretranslate( $original_id, $translation_set ) ) {
 			return false;
 		}
@@ -20,7 +45,6 @@ class Deepl extends Pretranslation {
 			return false;
 		}
 		$target_lang = $this->get_deepl_locale( $locale->slug );
-		error_log( print_r( $locale, true ) );
 		if ( empty( $target_lang ) ) {
 			return false;
 		}
@@ -142,7 +166,7 @@ class Deepl extends Pretranslation {
 			'ZH'    => 'prefer_more',
 		);
 
-		if ( ( 'DE' == $locale || 'NL' == $locale ) && 'formal' == $set_slug ) {
+		if ( ( 'DE' === $locale || 'NL' === $locale ) && 'formal' === $set_slug ) {
 			return 'prefer_more';
 		}
 		if ( array_key_exists( $locale, $lang_informality ) ) {
