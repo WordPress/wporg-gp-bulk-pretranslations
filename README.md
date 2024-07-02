@@ -14,5 +14,9 @@ so the translator is able to select the strings she wants to pretranslate and th
 
 ![image](https://github.com/amieiro/wporg-gp-bulk-pretranslations/assets/1667814/dd0c969e-8ac3-4e91-8138-d49b9e941a65)
 
+After using this functionality, the user obtains a bar with the number of pre-translations added.
+
+![image](https://github.com/amieiro/wporg-gp-bulk-pretranslations/assets/1667814/338ff187-e320-49b2-9d72-68623823f8fb)
+
 
 This functionality is only available to GTE.
