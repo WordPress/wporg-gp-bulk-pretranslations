@@ -90,6 +90,11 @@ class Plugin extends GP_Route {
 	 * @param array              $bulk             The bulk action data.
 	 */
 	public function store_pretanslations( $project, $locale, $translation_set, $bulk ) {
+		$affected_actions = array( 'bulk-pretranslation-tm', 'bulk-pretranslation-openai', 'bulk-pretranslation-deepl' );
+		if ( ! in_array( $bulk['action'], $affected_actions, true ) ) {
+			return;
+		}
+
 		$can_approve = $this->can( 'approve', 'translation-set', $translation_set->id );
 		if ( ! $can_approve ) {
 			return;
