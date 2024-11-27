@@ -125,6 +125,7 @@ class Plugin extends GP_Route {
 				}
 			}
 		}
+
 		$this->set_notice( $pretranslations_added );
 	}
 
@@ -154,13 +155,31 @@ class Plugin extends GP_Route {
 	 * Set the notice with the number of pre-translations added.
 	 *
 	 * @param int $pretranslations_added The number of pre-translations added.
+	 *
+	 * @return void
 	 */
 	private function set_notice( int $pretranslations_added ):void {
 		$notice = sprintf(
 		/* translators: %s: Pretranslations count. */
-			_n( '%s pretranslation was added', '%s pretranslations were added', $pretranslations_added, 'glotpress' ),
+			_n( '%s pretranslation was added.', '%s pretranslations were added.', $pretranslations_added, 'wporg-gp-bulk-pretranslations' ),
 			$pretranslations_added
 		);
+		if ( $pretranslations_added > 0 ) {
+			$current_url = str_replace( '-bulk/', '', gp_url_current() );
+			$waiting_url = add_query_arg( 'filters[status]', 'waiting', $current_url );
+
+			$notice .= '<br>';
+			$notice .= wp_kses(
+				sprintf(
+				_n( "You can see it in <a href=\"%s\">waiting</a> status.",
+					"You can see them in <a href=\"%s\">waiting</a> status.",
+					$pretranslations_added,
+					'wporg-gp-bulk-pretranslations' ),
+				$waiting_url,
+			),
+				array( 'a' => array( 'href' => array() ) )
+			);
+		}
 		gp_notice_set( $notice );
 	}
 }

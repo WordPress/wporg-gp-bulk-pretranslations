@@ -43,7 +43,7 @@ class Translation_Memory extends Pretranslation {
 		if ( ! $this->should_pretranslate( $original_id, $translation_set ) ) {
 			return false;
 		}
-		$suggestions = Translation_Memory_Client::query( $this->original->singular, $this->original->plural, $locale->slug );
+		$suggestions = Translation_Memory_Client::query( $this->original->singular, $locale->slug );
 		if ( empty( $suggestions ) ) {
 			return false;
 		}
