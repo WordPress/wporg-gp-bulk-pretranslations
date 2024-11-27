@@ -60,16 +60,18 @@ abstract class Pretranslation {
 		if ( ! $this->original ) {
 			return false;
 		}
+
+		// We don't pre translate strings with plural forms.
 		if ( ! is_null( $this->original->plural ) ) {
 			return false;
 		}
 
-		// We don't pre translate string with a current translation.
+		// We don't pre translate a string with a translation in current, waiting, fuzzy or changesrequested status.
 		$translations = GP::$translation->find(
 			array(
 				'original_id'        => $original_id,
 				'translation_set_id' => $translation_set->id,
-				'status'             => 'current',
+				'status'             => array( 'current', 'waiting', 'fuzzy', 'changesrequested' ),
 			)
 		);
 		if ( ! empty( $translations ) ) {
